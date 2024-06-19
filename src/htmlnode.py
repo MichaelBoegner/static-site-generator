@@ -1,9 +1,9 @@
 class HTMLNode:
-    def __init__(self, tag=None, value=None, children=None, props=None):
-        self.tag = tag
-        self.value = value
+    def __init__(self, value=None, tag=None, props=None, children=None):
+        self.tag=tag
+        self.value=value
+        self.props=props
         self.children = children
-        self.props = props
     def to_html(self):
         raise NotImplementedError
     def props_to_html(self):
@@ -12,4 +12,4 @@ class HTMLNode:
             props_converted = props_converted + f' {key}="{self.props[key]}"'
         return props_converted
     def __repr__(self):
-        return f"{self.tag}, {self.value}, {self.children}, {self.props}"
+        return f"{self.value}, {self.tag}, {self.props}, {self.children}"
