@@ -27,10 +27,6 @@ class TextNode:
             return LeafNode(None, "img", props)
         raise ValueError("self.text_type must be one of the following values: 'text',\
                          'bold', 'italic', 'code', 'link', 'image'")
-    def split_nodes_delimiter(old_nodes, delimiter, text_type):
-        for old_node in old_nodes:
-            old_node = old_node.split(f"{delimiter}")
-            for i in range(0, len(old_node)):
-                print("this is old node", old_node)
+
 
     
