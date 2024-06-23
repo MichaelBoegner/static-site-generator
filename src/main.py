@@ -1,21 +1,12 @@
 from textnode import TextNode
 from leafnode import LeafNode
 from parentnode import ParentNode
+from helpers import split_nodes_delimiter
 
 def main():
-    node = ParentNode(
-    [
-        LeafNode("Bold text", "b"),
-        LeafNode("Normal text", None),
-        LeafNode("italic text","i"),
-        LeafNode("Normal text", None),
-    ],
-    "p",
-    {"class": "brown"}
-)
-
-    node.to_html()
-    print(node)
+    node = TextNode("This is text with a `code block` word", "text")
+    new_nodes = split_nodes_delimiter([node], "`", "code")  
+    print(new_nodes)
 
 
 if __name__ == "__main__":
