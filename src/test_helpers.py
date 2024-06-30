@@ -1,5 +1,5 @@
 import unittest
-from helpers import split_nodes_delimiter, extract_markdown_images
+from helpers import split_nodes_delimiter, extract_markdown_images, extract_markdown_links
 from textnode import TextNode
 
 class TestParser(unittest.TestCase):
@@ -37,4 +37,10 @@ class TestMarkdownImagesParser(unittest.TestCase):
         text = "This is text with an ![image](https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/zjjcJKZ.png) and ![another](https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/dfsdkjfd.png)"
         expected = [("image", "https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/zjjcJKZ.png"), ("another", "https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/dfsdkjfd.png")]
         actual = extract_markdown_images(text)
+        self.assertEqual(expected, actual)
+
+    def test_extract_markdown_links(self):
+        text = "This is text with a [link](https://www.example.com) and [another](https://www.example.com/another)"
+        expected = [("link", "https://www.example.com"), ("another", "https://www.example.com/another")]
+        actual = extract_markdown_links(text)
         self.assertEqual(expected, actual)
