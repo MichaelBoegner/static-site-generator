@@ -71,7 +71,9 @@ def extract_markdown_links(text):
 def split_nodes_image(old_nodes):
     for old_node in old_nodes:
         markdown_images = extract_markdown_images(old_node.text)
-    
-    print("THIS IS MARKDOWN_IMAGES=   ", markdown_images)
-    for markdown_image in markdown_images:
-        print("THIS IS MARKDOWN_IMAGE=   ", markdown_image)
+        i = 1
+        split = []
+        for image_tup in markdown_images:
+            print("THIS IS WHAT'S GOING ON = ",old_node.text.split(f"![{image_tup[0]}]({image_tup[1]})", 0))        
+            
+            print("THIS IS SPLIT=   ", split)
