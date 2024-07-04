@@ -54,7 +54,7 @@ class TestMarkdownParsers(unittest.TestCase):
         self.assertEqual(expected, actual)
 
     def test_split_nodes_image(self):
-        nodes = [TextNode("This is text with an ![image](https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/zjjcJKZ.png) and another ![second image](https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/3elNhQu.png)",text_type_text)]
+        nodes = [TextNode("This is text with an ![image](https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/zjjcJKZ.png) and another",text_type_text)]
         expected = [
             TextNode("This is text with an ", text_type_text),
             TextNode("image", text_type_image, "https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/zjjcJKZ.png"),

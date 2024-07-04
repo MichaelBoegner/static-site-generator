@@ -1,6 +1,7 @@
 from textnode import (
     TextNode,
     text_type_text,
+    text_type_image
 )
 import re
 
@@ -71,9 +72,19 @@ def extract_markdown_links(text):
 def split_nodes_image(old_nodes):
     for old_node in old_nodes:
         markdown_images = extract_markdown_images(old_node.text)
-        i = 1
-        split = []
-        for image_tup in markdown_images:
-            print("THIS IS WHAT'S GOING ON = ",old_node.text.split(f"![{image_tup[0]}]({image_tup[1]})", 0))        
-            
-            print("THIS IS SPLIT=   ", split)
+        text_split = ""
+        new_nodes = []
+        for image_tuple in markdown_images:
+            text_split = old_node.text.split(f"![{image_tuple[0]}]({image_tuple[1]})", 1)
+            for i in range(len(text_split)): 
+                if i % 2 == 0:
+                    new_nodes.append(TextNode(text_split[i], text_type_text))
+                else:
+                    new_nodes.append(TextNode(image_tuple[0], text_type_image, image_tuple[1]))
+        
+        print("\nTHIS IS OLD NODE.TEXT = ", old_node.text)
+        print("THIS IS MARKDOWN IMAGES = ", markdown_images)
+        print("THIS IS LEN = ", len(markdown_images))  
+        print("THIS IS TEXT_SPLIT = ", text_split)
+        print("THIS IS NEW NODES = ", new_nodes)
+        # split.append(old_node.text.split(f"![{image_tup[0]}]({image_tup[1]})", 1))
