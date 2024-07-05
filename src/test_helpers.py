@@ -1,5 +1,5 @@
 import unittest
-from helpers import split_nodes_delimiter, extract_markdown_images, extract_markdown_links, split_nodes_image
+from helpers import split_nodes_delimiter, extract_markdown_images, extract_markdown_links, split_nodes_image, split_nodes_link
 from textnode import (
 TextNode,
 text_type_text, 
@@ -41,11 +41,11 @@ class TestParser(unittest.TestCase):
         self.assertEqual(expected, actual)
     
 class TestMarkdownParsers(unittest.TestCase):
-    # def test_extract_markdown_images(self):
-    #     text = "This is text with an ![image](https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/zjjcJKZ.png) and ![another](https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/dfsdkjfd.png)"
-    #     expected = [("image", "https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/zjjcJKZ.png"), ("another", "https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/dfsdkjfd.png")]
-    #     actual = extract_markdown_images(text)
-    #     self.assertEqual(expected, actual)
+    def test_extract_markdown_images(self):
+        text = "This is text with an ![image](https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/zjjcJKZ.png) and ![another](https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/dfsdkjfd.png)"
+        expected = [("image", "https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/zjjcJKZ.png"), ("another", "https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/dfsdkjfd.png")]
+        actual = extract_markdown_images(text)
+        self.assertEqual(expected, actual)
 
     def test_extract_markdown_links(self):
         text = "This is text with a [link](https://www.example.com) and [another](https://www.example.com/another)"
@@ -54,7 +54,7 @@ class TestMarkdownParsers(unittest.TestCase):
         self.assertEqual(expected, actual)
 
     def test_split_nodes_image(self):
-        nodes = [TextNode("This is text with an ![image](https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/zjjcJKZ.png) and another",text_type_text)]
+        nodes = [TextNode("This is text with an ![image](https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/zjjcJKZ.png) and another ![second image](https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/3elNhQu.png)",text_type_text)]
         expected = [
             TextNode("This is text with an ", text_type_text),
             TextNode("image", text_type_image, "https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/zjjcJKZ.png"),
@@ -64,4 +64,27 @@ class TestMarkdownParsers(unittest.TestCase):
         actual = split_nodes_image(nodes)
         self.assertEqual(expected, actual)
         
-
+    def test_split_nodes_image_three_sections(self):
+        nodes = [TextNode("This is text with an ![image](https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/zjjcJKZ.png) and another ![second image](https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/3elNhQu.png), and this is also text with a ![third image](https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/3elNhQu.png)",text_type_text)]
+        expected = [
+            TextNode("This is text with an ", text_type_text),
+            TextNode("image", text_type_image, "https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/zjjcJKZ.png"),
+            TextNode(" and another ", text_type_text),
+            TextNode("second image", text_type_image, "https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/3elNhQu.png"),
+            TextNode(", and this is also text with a ", text_type_text),
+            TextNode("third image", text_type_image, "https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/3elNhQu.png")
+        ]
+        actual = split_nodes_image(nodes)
+        self.assertEqual(expected, actual)
+        
+    def test_split_nodes_links(self):
+        nodes = [TextNode("This is text with a [link](https://www.example.com) and [another](https://www.example.com/another)", text_type_text)]
+        expected = [
+            TextNode("This is text with a ", text_type_text),
+            TextNode("link", text_type_link, "https://www.example.com"),
+            TextNode(" and ", text_type_text),
+            TextNode("another", text_type_link, "https://www.example.com/another")
+        ]
+        actual = split_nodes_link(nodes)
+        self.maxDiff = None
+        self.assertEqual(expected, actual)
