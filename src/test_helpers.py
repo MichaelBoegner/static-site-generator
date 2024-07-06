@@ -189,3 +189,8 @@ class TestMarkdownBlocks(unittest.TestCase):
         expected = block_type_quote
         actual = block_to_block_type(">This is a quote block\n>New line in quote block")
         self.assertEqual(expected, actual)
+    
+    def test_block_to_block_type_ordered_list(self):
+        expected = block_type_ordered_list
+        actual = block_to_block_type("1. This is an ordered_list block\n2. New line in ordered_list block\n3. New line in ordered_list block")
+        self.assertEqual(expected, actual)

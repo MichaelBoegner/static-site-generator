@@ -150,5 +150,12 @@ def block_to_block_type(block):
             if newline_count != arrow_count-1:
                 raise ValueError("> needed for every new line in quote block")
         return block_type_quote  
+    elif "1. " in block:
+        if "\n" in block:
+            ordered_list_list = block.split("\n")
+            for i in range(len(ordered_list_list)):
+                if int(ordered_list_list[i][0]) != i + 1:
+                    raise ValueError("Every line in an ordered list block must start with a number followed by a . character and a space. The number must start at 1 and increment by 1 for each line.")
+        return block_type_ordered_list
     else:
         return block_type_paragraph
