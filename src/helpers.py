@@ -121,13 +121,9 @@ def markdown_to_blocks(markdown):
         raise ValueError("Paramater value not type string.")
     if len(markdown) == 0:
         raise ValueError("No text in markdown doc.")
-    blocks = markdown.split("\n\n")
-    for block in blocks: 
-        print("BLOCK = ", block)  
-        if block == "\n":
-            print("MATCHES EXIST AND BLOCK = ", block)
-            del(block)
-    return blocks
+    blocks = re.split(r'\n{2,}', markdown)
+    filtered_blocks = [block for block in blocks if block.strip()]
+    return filtered_blocks
 
 def block_to_block_type(block):
     if "* " in block: 
