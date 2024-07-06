@@ -122,6 +122,11 @@ def markdown_to_blocks(markdown):
     if len(markdown) == 0:
         raise ValueError("No text in markdown doc.")
     blocks = markdown.split("\n\n")
+    for block in blocks: 
+        print("BLOCK = ", block)  
+        if block == "\n":
+            print("MATCHES EXIST AND BLOCK = ", block)
+            del(block)
     return blocks
 
 def block_to_block_type(block):

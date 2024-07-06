@@ -139,6 +139,13 @@ class TestMarkdownBlocks(unittest.TestCase):
         self.maxDiff = None
         self.assertEqual(expected, actual)
     
+    def test_markdown_to_blocks_double_space(self):
+        markdown = "This is **bolded** paragraph\n\n\nThis is another paragraph with *italic* text and `code` here\nThis is the same paragraph on a new line\n\n* This is a list\n* with items"
+        expected = ["This is **bolded** paragraph", "This is another paragraph with *italic* text and `code` here\nThis is the same paragraph on a new line", "* This is a list\n* with items"]
+        actual = markdown_to_blocks(markdown)
+        self.maxDiff = None
+        self.assertEqual(expected, actual)
+    
     def test_markdown_to_blocks_type(self):
         markdown = []
         with self.assertRaises(ValueError):
@@ -194,3 +201,5 @@ class TestMarkdownBlocks(unittest.TestCase):
         expected = block_type_ordered_list
         actual = block_to_block_type("1. This is an ordered_list block\n2. New line in ordered_list block\n3. New line in ordered_list block")
         self.assertEqual(expected, actual)
+
+    
