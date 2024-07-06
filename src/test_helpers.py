@@ -130,3 +130,13 @@ class TestMarkdownParsers(unittest.TestCase):
         actual = markdown_to_blocks(markdown)
         self.maxDiff = None
         self.assertEqual(expected, actual)
+    
+    def test_markdown_to_blocks_type(self):
+        markdown = []
+        with self.assertRaises(ValueError):
+            markdown_to_blocks(markdown)
+
+    def test_markdown_to_blocks_blank(self):
+        markdown = ""
+        with self.assertRaises(ValueError):
+            markdown_to_blocks(markdown)

@@ -110,5 +110,9 @@ def text_to_text_nodes(text):
     return new_nodes
 
 def markdown_to_blocks(markdown):
+    if not isinstance(markdown, (str)):
+        raise ValueError("Paramater value not type string.")
+    if len(markdown) == 0:
+        raise ValueError("No text in markdown doc.")
     blocks = markdown.split("\n\n")
     return blocks
