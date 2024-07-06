@@ -105,3 +105,15 @@ class TestMarkdownParsers(unittest.TestCase):
         ]
         actual = text_to_text_nodes(text)
         self.assertEqual(expected, actual)
+
+    def test_text_to_text_nodes_blank(self):
+        text = ""
+        expected = []
+        actual = text_to_text_nodes(text)
+        self.assertEqual(expected, actual)
+
+    def test_text_to_text_nodes_type_str(self):
+        text = []
+        with self.assertRaises(ValueError):
+            text_to_text_nodes(text)
+    

@@ -81,9 +81,7 @@ def split_nodes_link(old_nodes):
             new_nodes.append(old_node)
             continue
         for link in links:
-            print("LINK = ", link)
             sections = original_text.split(f"[{link[0]}]({link[1]})", 1)
-            print("SECTIONS = ", sections)
             if len(sections) != 2:
                 raise ValueError("Invalid markdown, link section not closed")
             if sections[0] != "":
@@ -101,6 +99,8 @@ def split_nodes_link(old_nodes):
     return new_nodes
         
 def text_to_text_nodes(text):
+    if not isinstance(text, (str)):
+        raise ValueError("Paramater value not type string.")
     textnode = [TextNode(text, text_type_text)]
     new_nodes = split_nodes_image(textnode)
     new_nodes = split_nodes_link(new_nodes)
