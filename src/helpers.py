@@ -9,6 +9,13 @@ from textnode import (
 )
 import re
 
+block_type_paragraph = "paragraph"
+block_type_heading = "heading"
+block_type_code = "code"
+block_type_quote = "quote"
+block_type_unordered_list = "unordered_list"
+block_type_ordered_list = "ordered_list"
+
 def split_nodes_delimiter(old_nodes, delimiter, text_type):
     new_nodes = []
     for old_node in old_nodes:
@@ -116,3 +123,32 @@ def markdown_to_blocks(markdown):
         raise ValueError("No text in markdown doc.")
     blocks = markdown.split("\n\n")
     return blocks
+
+def block_to_block_type(block):
+    if "* " in block: 
+        if "\n" in block:
+            newline_count = block.count("\n")
+            asterix_count = block.count("* ")
+            if newline_count != asterix_count - 1:
+                raise ValueError("* needed for every new line in unordered list block")
+        return block_type_unordered_list
+    elif "- " in block:
+        if "\n" in block:
+            newline_count = block.count("\n")
+            hyphen_count = block.count("- ")
+            if newline_count != hyphen_count - 1:
+                raise ValueError("- needed for every new line in unordered list block")
+        return block_type_unordered_list
+    elif "# " in block or "## " in block or "### " in block or "#### " in block or "##### " in block or "###### " in block:
+        return block_type_heading
+    elif "```" in block:
+        return block_type_code
+    elif ">" in block:
+        if "\n" in block:
+            newline_count = block.count("\n")
+            arrow_count = block.count(">")
+            if newline_count != arrow_count-1:
+                raise ValueError("> needed for every new line in quote block")
+        return block_type_quote  
+    else:
+        return block_type_paragraph

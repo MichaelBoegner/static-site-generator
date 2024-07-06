@@ -6,7 +6,14 @@ from helpers import (
     split_nodes_image,
     split_nodes_link,
     text_to_text_nodes,
-    markdown_to_blocks
+    markdown_to_blocks,
+    block_to_block_type,
+    block_type_paragraph,
+    block_type_code,
+    block_type_heading,
+    block_type_ordered_list,
+    block_type_unordered_list,
+    block_type_quote,
 )
 from textnode import (
     TextNode,
@@ -124,6 +131,7 @@ class TestMarkdownParsers(unittest.TestCase):
         with self.assertRaises(ValueError):
             text_to_text_nodes(text)
     
+class TestMarkdownBlocks(unittest.TestCase):    
     def test_markdown_to_blocks(self):
         markdown = "This is **bolded** paragraph\n\nThis is another paragraph with *italic* text and `code` here\nThis is the same paragraph on a new line\n\n* This is a list\n* with items"
         expected = ["This is **bolded** paragraph", "This is another paragraph with *italic* text and `code` here\nThis is the same paragraph on a new line", "* This is a list\n* with items"]
@@ -140,3 +148,44 @@ class TestMarkdownParsers(unittest.TestCase):
         markdown = ""
         with self.assertRaises(ValueError):
             markdown_to_blocks(markdown)
+    
+    def test_block_to_block_type_unordered_list(self):
+        block = "- This is a list\n- with items"
+        expected = block_type_unordered_list
+        actual = block_to_block_type(block)
+        self.assertEqual(expected, actual)
+
+        block = "* This is a list\n* with items"
+        expected = block_type_unordered_list
+        actual = block_to_block_type(block)
+        self.assertEqual(expected, actual)
+
+    def test_block_to_block_type_heading(self):
+        expected = block_type_heading
+        actual = block_to_block_type("# This is a heading")
+        self.assertEqual(expected, actual)
+
+        actual = block_to_block_type("## This is a heading")
+        self.assertEqual(expected, actual)
+
+        actual = block_to_block_type("### This is a heading")
+        self.assertEqual(expected, actual)
+
+        actual = block_to_block_type("#### This is a heading")
+        self.assertEqual(expected, actual)
+
+        actual = block_to_block_type("##### This is a heading")
+        self.assertEqual(expected, actual)
+
+        actual = block_to_block_type("###### This is a heading")
+        self.assertEqual(expected, actual)
+
+    def test_block_to_block_type_code(self):
+        expected = block_type_code
+        actual = block_to_block_type("```This is a code block```")
+        self.assertEqual(expected, actual)
+
+    def test_block_to_block_type_quote(self):
+        expected = block_type_quote
+        actual = block_to_block_type(">This is a quote block\n>New line in quote block")
+        self.assertEqual(expected, actual)
