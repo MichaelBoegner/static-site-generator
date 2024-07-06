@@ -1,13 +1,21 @@
 import unittest
-from helpers import split_nodes_delimiter, extract_markdown_images, extract_markdown_links, split_nodes_image, split_nodes_link, text_to_text_nodes
+from helpers import (
+    split_nodes_delimiter,
+    extract_markdown_images,
+    extract_markdown_links,
+    split_nodes_image,
+    split_nodes_link,
+    text_to_text_nodes,
+    markdown_to_blocks
+)
 from textnode import (
-TextNode,
-text_type_text, 
-text_type_bold,
-text_type_italic, 
-text_type_code,
-text_type_link, 
-text_type_image, 
+    TextNode,
+    text_type_text, 
+    text_type_bold,
+    text_type_italic,
+    text_type_code,
+    text_type_link,
+    text_type_image,
 )
 
 class TestParser(unittest.TestCase):
@@ -86,7 +94,6 @@ class TestMarkdownParsers(unittest.TestCase):
             TextNode("another", text_type_link, "https://www.example.com/another")
         ]
         actual = split_nodes_link(nodes)
-        self.maxDiff = None
         self.assertEqual(expected, actual)
 
     def test_text_to_text_nodes(self):
@@ -117,3 +124,9 @@ class TestMarkdownParsers(unittest.TestCase):
         with self.assertRaises(ValueError):
             text_to_text_nodes(text)
     
+    def test_markdown_to_blocks(self):
+        markdown = "This is **bolded** paragraph\n\nThis is another paragraph with *italic* text and `code` here\nThis is the same paragraph on a new line\n\n* This is a list\n* with items"
+        expected = ["This is **bolded** paragraph", "This is another paragraph with *italic* text and `code` here\nThis is the same paragraph on a new line", "* This is a list\n* with items"]
+        actual = markdown_to_blocks(markdown)
+        self.maxDiff = None
+        self.assertEqual(expected, actual)
