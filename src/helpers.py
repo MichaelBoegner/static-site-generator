@@ -172,5 +172,10 @@ def block_type_code_to_html(block):
     leaf_node = []
     leaf_node.append(LeafNode(stripped_block, "code"))
     parent_node = ParentNode(leaf_node, "pre")
-    print("PARENT NODE = ", parent_node.to_html())
     return parent_node.to_html()
+
+def block_type_quote_to_html(block):
+    stripped_block = block.replace(">", "")
+    leaf_node = LeafNode(stripped_block, "blockquote")
+    print("PARENT NODE = ", leaf_node.to_html())
+    return leaf_node.to_html()

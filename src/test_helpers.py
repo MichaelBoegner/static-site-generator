@@ -10,6 +10,7 @@ from helpers import (
     block_to_block_type,
     block_type_paragraph_to_html,
     block_type_code_to_html,
+    block_type_quote_to_html,
     block_type_paragraph,
     block_type_code,
     block_type_heading,
@@ -222,4 +223,10 @@ class TestMarkdownBlocks(unittest.TestCase):
         block = "```This is a code block```"
         expected = "<pre><code>This is a code block</code></pre>"
         actual = block_type_code_to_html(block)
+        self.assertEqual(expected, actual)
+    
+    def test_block_type_quote_to_html(self):
+        block = ">This is a quote block\n>New line in quote block"
+        expected = "<blockquote>This is a quote block\nNew line in quote block</blockquote>"
+        actual = block_type_quote_to_html(block)
         self.assertEqual(expected, actual)
