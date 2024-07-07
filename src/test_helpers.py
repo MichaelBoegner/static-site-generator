@@ -14,6 +14,7 @@ from helpers import (
     block_type_heading_to_html,
     block_type_unordered_list_to_html,
     block_type_ordered_list_to_html,
+    markdown_to_html_node,
     block_type_ordered_list,
     block_type_paragraph,
     block_type_code,
@@ -222,6 +223,12 @@ class TestMarkdownBlocks(unittest.TestCase):
         expected =  "<p>This is **bolded** paragraph</p>"
         actual = block_type_paragraph_to_html(block)
         self.assertEqual(expected, actual)
+    
+    def test_block_type_paragraph_to_html_newline(self):
+        block = "This is another paragraph with *italic* text and `code` here\nThis is the same paragraph on a new line"
+        expected =  "<p>This is another paragraph with *italic* text and `code` here<br>This is the same paragraph on a new line</p>"
+        actual = block_type_paragraph_to_html(block)
+        self.assertEqual(expected, actual)
 
     def test_block_type_code_to_html(self):
         block = "```This is a code block```"
@@ -287,4 +294,10 @@ class TestMarkdownBlocks(unittest.TestCase):
         block = "1. This is an ordered list\n2. with items"
         expected = "<ol><li>This is an ordered list</li><li>with items</li></ol>"
         actual = block_type_ordered_list_to_html(block)
+        self.assertEqual(expected, actual)
+
+    def test_markdown_to_html_node(self):
+        markdown = "This is **bolded** paragraph\n\nThis is another paragraph with *italic* text and `code` here\nThis is the same paragraph on a new line\n\n* This is a list\n* with items"
+        expected = "<div><p>This is **bolded** paragraph</p><p>This is another paragraph with *italic* text and `code` here<br>This is the same paragraph on a new line</p><ul><li>This is a list</li><li>with items</li></ul></div>"
+        actual = markdown_to_html_node(markdown)
         self.assertEqual(expected, actual)

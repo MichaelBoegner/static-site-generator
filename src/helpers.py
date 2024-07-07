@@ -1,3 +1,4 @@
+from htmlnode import HTMLNode
 from leafnode import LeafNode
 from parentnode import ParentNode
 from textnode import (
@@ -164,6 +165,8 @@ def block_to_block_type(block):
         return block_type_paragraph
     
 def block_type_paragraph_to_html(block):
+    if "\n" in block:
+        block = block.replace("\n", "<br>")
     leaf_node = LeafNode(block, "p")
     return leaf_node.to_html()
     
@@ -212,3 +215,23 @@ def block_type_ordered_list_to_html(block):
         leaf_node.append(LeafNode(line, "li")) 
     parent_node = ParentNode(leaf_node, "ol")
     return parent_node.to_html()
+
+def markdown_to_html_node(markdown):
+    blocks = markdown_to_blocks(markdown)
+    html_blocks = ""
+    for block in blocks:
+        block_type = block_to_block_type(block)
+        if block_type == block_type_paragraph:
+            html_blocks += block_type_paragraph_to_html(block)
+        elif block_type == block_type_code:
+            html_blocks += block_type_code_to_html(block)
+        elif block_type == block_type_quote:
+            html_blocks += block_type_quote_to_html(block)
+        elif block_type == block_type_heading:
+            html_blocks += block_type_heading_to_html(block)
+        elif block_type == block_type_unordered_list:
+            html_blocks += block_type_unordered_list_to_html(block)
+        elif block_type == block_type_ordered_list:
+            html_blocks += block_type_ordered_list_to_html(block)
+        
+    return HTMLNode(html_blocks, "div").to_html()
