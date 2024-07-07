@@ -169,8 +169,7 @@ def block_type_paragraph_to_html(block):
     
 def block_type_code_to_html(block):
     stripped_block = block.strip("```")
-    leaf_node = []
-    leaf_node.append(LeafNode(stripped_block, "code"))
+    leaf_node = [LeafNode(stripped_block, "code")]
     parent_node = ParentNode(leaf_node, "pre")
     return parent_node.to_html()
 
@@ -190,5 +189,14 @@ def block_type_heading_to_html(block):
             break
     stripped_block = block.strip(f"{heading_type} ")
     leaf_node = LeafNode(stripped_block, f"h{count}")
-    print("LEAF NODE = ", leaf_node.to_html())
     return leaf_node.to_html()
+
+def block_type_unordered_list_to_html(block):
+    stripped_block = block.replace("- ","")
+    stripped_block = stripped_block.split("\n")
+    leaf_node = []
+    for line in stripped_block:
+        leaf_node.append(LeafNode(line, "li")) 
+    parent_node = ParentNode(leaf_node, "ul")
+    print("PARENT NODE = ", parent_node.to_html())
+    return parent_node.to_html()

@@ -12,6 +12,7 @@ from helpers import (
     block_type_code_to_html,
     block_type_quote_to_html,
     block_type_heading_to_html,
+    block_type_unordered_list_to_html,
     block_type_paragraph,
     block_type_code,
     block_type_heading,
@@ -232,8 +233,45 @@ class TestMarkdownBlocks(unittest.TestCase):
         actual = block_type_quote_to_html(block)
         self.assertEqual(expected, actual)
 
-    def test_block_type_heading_to_html(self):
+    def test_block_type_heading_to_html_h1(self):
         block = "# This is a heading"
         expected = "<h1>This is a heading</h1>"
         actual = block_type_heading_to_html(block)
         self.assertEqual(expected, actual)
+    
+    def test_block_type_heading_to_html_h2(self):
+        block = "## This is a heading"
+        expected = "<h2>This is a heading</h2>"
+        actual = block_type_heading_to_html(block)
+        self.assertEqual(expected, actual)
+
+    def test_block_type_heading_to_html_h3(self):
+        block = "### This is a heading"
+        expected = "<h3>This is a heading</h3>"
+        actual = block_type_heading_to_html(block)
+        self.assertEqual(expected, actual)
+
+    def test_block_type_heading_to_html_h4(self):
+        block = "#### This is a heading"
+        expected = "<h4>This is a heading</h4>"
+        actual = block_type_heading_to_html(block)
+        self.assertEqual(expected, actual)
+
+    def test_block_type_heading_to_html_h5(self):
+        block = "##### This is a heading"
+        expected = "<h5>This is a heading</h5>"
+        actual = block_type_heading_to_html(block)
+        self.assertEqual(expected, actual)
+
+    def test_block_type_heading_to_html_h6(self):
+        block = "###### This is a heading"
+        expected = "<h6>This is a heading</h6>"
+        actual = block_type_heading_to_html(block)
+        self.assertEqual(expected, actual)
+    
+    def test_block_type_unordered_list_to_html(self):
+        block = "- This is a list\n- with items"
+        expected = "<ul><li>This is a list</li><li>with items</li></ul>"
+        actual = block_type_unordered_list_to_html(block)
+        self.assertEqual(expected, actual)
+
