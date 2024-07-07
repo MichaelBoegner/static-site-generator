@@ -8,6 +8,7 @@ from helpers import (
     text_to_text_nodes,
     markdown_to_blocks,
     block_to_block_type,
+    block_type_paragraph_to_html,
     block_type_paragraph,
     block_type_code,
     block_type_heading,
@@ -187,6 +188,9 @@ class TestMarkdownBlocks(unittest.TestCase):
         actual = block_to_block_type("###### This is a heading")
         self.assertEqual(expected, actual)
 
+        actual = block_to_block_type("######This is not a heading")
+        self.assertNotEqual(expected, actual)
+
     def test_block_to_block_type_code(self):
         expected = block_type_code
         actual = block_to_block_type("```This is a code block```")
@@ -201,5 +205,14 @@ class TestMarkdownBlocks(unittest.TestCase):
         expected = block_type_ordered_list
         actual = block_to_block_type("1. This is an ordered_list block\n2. New line in ordered_list block\n3. New line in ordered_list block")
         self.assertEqual(expected, actual)
-
     
+    def test_block_to_block_type_paragraph(self):
+        expected = block_type_paragraph
+        actual = block_to_block_type("This is another paragraph with *italic* text and `code` here\nThis is the same paragraph on a new line")
+        self.assertEqual(expected, actual)
+
+    def test_block_type_paragraph_to_html(self):
+        block = "This is **bolded** paragraph"
+        expected =  "<p>This is **bolded** paragraph</p>"
+        actual = block_type_paragraph_to_html(block)
+        self.assertEqual(expected, actual)

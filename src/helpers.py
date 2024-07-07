@@ -1,3 +1,4 @@
+from leafnode import LeafNode
 from textnode import (
     TextNode,
     text_type_text,
@@ -126,14 +127,14 @@ def markdown_to_blocks(markdown):
     return filtered_blocks
 
 def block_to_block_type(block):
-    if "* " in block: 
+    if list(block)[0] == "*" and list(block)[1] == " ":      
         if "\n" in block:
             newline_count = block.count("\n")
             asterix_count = block.count("* ")
             if newline_count != asterix_count - 1:
                 raise ValueError("* needed for every new line in unordered list block")
         return block_type_unordered_list
-    elif "- " in block:
+    elif list(block)[0] == "-" and list(block)[1] == " ":
         if "\n" in block:
             newline_count = block.count("\n")
             hyphen_count = block.count("- ")
@@ -160,3 +161,8 @@ def block_to_block_type(block):
         return block_type_ordered_list
     else:
         return block_type_paragraph
+    
+def block_type_paragraph_to_html(block):
+    leaf_node = LeafNode(block, "p")
+    return leaf_node.to_html()
+    
