@@ -192,11 +192,23 @@ def block_type_heading_to_html(block):
     return leaf_node.to_html()
 
 def block_type_unordered_list_to_html(block):
-    stripped_block = block.replace("- ","")
-    stripped_block = stripped_block.split("\n")
+    if list(block)[0] == "*" and list(block)[1] == " ": 
+        stripped_block = block.replace("* ","")
+        stripped_block = stripped_block.split("\n")
+    elif list(block)[0] == "-" and list(block)[1] == " ": 
+        stripped_block = block.replace("- ","")
+        stripped_block = stripped_block.split("\n")
     leaf_node = []
     for line in stripped_block:
         leaf_node.append(LeafNode(line, "li")) 
     parent_node = ParentNode(leaf_node, "ul")
-    print("PARENT NODE = ", parent_node.to_html())
+    return parent_node.to_html()
+
+def block_type_ordered_list_to_html(block):
+    stripped_block = block.split("\n")
+    leaf_node = []
+    for line in stripped_block:
+        line = "".join(list(line)[3:])
+        leaf_node.append(LeafNode(line, "li")) 
+    parent_node = ParentNode(leaf_node, "ol")
     return parent_node.to_html()

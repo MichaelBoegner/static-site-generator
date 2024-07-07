@@ -13,6 +13,8 @@ from helpers import (
     block_type_quote_to_html,
     block_type_heading_to_html,
     block_type_unordered_list_to_html,
+    block_type_ordered_list_to_html,
+    block_type_ordered_list,
     block_type_paragraph,
     block_type_code,
     block_type_heading,
@@ -269,9 +271,20 @@ class TestMarkdownBlocks(unittest.TestCase):
         actual = block_type_heading_to_html(block)
         self.assertEqual(expected, actual)
     
-    def test_block_type_unordered_list_to_html(self):
+    def test_block_type_unordered_list_to_html_hyphen(self):
         block = "- This is a list\n- with items"
         expected = "<ul><li>This is a list</li><li>with items</li></ul>"
         actual = block_type_unordered_list_to_html(block)
         self.assertEqual(expected, actual)
 
+    def test_block_type_unordered_list_to_html_asterix(self):
+        block = "* This is a list\n* with items"
+        expected = "<ul><li>This is a list</li><li>with items</li></ul>"
+        actual = block_type_unordered_list_to_html(block)
+        self.assertEqual(expected, actual)
+
+    def test_block_type_ordered_list_to_html(self):
+        block = "1. This is an ordered list\n2. with items"
+        expected = "<ol><li>This is an ordered list</li><li>with items</li></ol>"
+        actual = block_type_ordered_list_to_html(block)
+        self.assertEqual(expected, actual)
