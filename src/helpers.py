@@ -1,4 +1,5 @@
 from leafnode import LeafNode
+from parentnode import ParentNode
 from textnode import (
     TextNode,
     text_type_text,
@@ -166,3 +167,10 @@ def block_type_paragraph_to_html(block):
     leaf_node = LeafNode(block, "p")
     return leaf_node.to_html()
     
+def block_type_code_to_html(block):
+    stripped_block = block.strip("```")
+    leaf_node = []
+    leaf_node.append(LeafNode(stripped_block, "code"))
+    parent_node = ParentNode(leaf_node, "pre")
+    print("PARENT NODE = ", parent_node.to_html())
+    return parent_node.to_html()
