@@ -177,5 +177,18 @@ def block_type_code_to_html(block):
 def block_type_quote_to_html(block):
     stripped_block = block.replace(">", "")
     leaf_node = LeafNode(stripped_block, "blockquote")
-    print("PARENT NODE = ", leaf_node.to_html())
+    return leaf_node.to_html()
+
+def block_type_heading_to_html(block):
+    count = 0
+    heading_type = ""
+    for char in block:
+        if char == "#":
+            count += 1
+            heading_type += "#"
+        else: 
+            break
+    stripped_block = block.strip(f"{heading_type} ")
+    leaf_node = LeafNode(stripped_block, f"h{count}")
+    print("LEAF NODE = ", leaf_node.to_html())
     return leaf_node.to_html()
