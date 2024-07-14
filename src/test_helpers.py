@@ -15,6 +15,8 @@ from helpers import (
     block_type_unordered_list_to_html,
     block_type_ordered_list_to_html,
     markdown_to_html_node,
+    extract_title,
+    generate_page,
     block_type_ordered_list,
     block_type_paragraph,
     block_type_code,
@@ -301,3 +303,19 @@ class TestMarkdownBlocks(unittest.TestCase):
         expected = "<div><p>This is **bolded** paragraph</p><p>This is another paragraph with *italic* text and `code` here<br>This is the same paragraph on a new line</p><ul><li>This is a list</li><li>with items</li></ul></div>"
         actual = markdown_to_html_node(markdown)
         self.assertEqual(expected, actual)
+
+    def test_extract_title(self):
+        markdown = "# This is a title"
+        expected = "This is a title"
+        actual = extract_title(markdown)
+        self.assertEqual(expected, actual)
+
+    def test_extract_title_no_h1(self):
+        markdown = "There is no h1 "
+        self.assertRaises(ValueError, extract_title, markdown)
+
+    def test_generate_page(self):
+        from_path = "content/index.md"
+        template_path = "template.html"
+        dest_path = "index.html"
+        generate_page(from_path, template_path, dest_path)

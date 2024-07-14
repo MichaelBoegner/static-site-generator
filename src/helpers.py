@@ -236,3 +236,32 @@ def markdown_to_html_node(markdown):
         
     return HTMLNode(html_blocks, "div").to_html()
 
+def extract_title(markdown):
+    if "# " in markdown:
+        blocks = markdown_to_blocks(markdown)
+        for block in blocks:
+            if "# " in block:
+                title = block.replace("# ", "")
+                return title
+    else:
+        raise ValueError("Markdown doesn't contain h1")
+    
+def generate_page(from_path, template_path, dest_path):
+    print("Generating page from `from_path` to `dest_path` using `template_path`.")
+    
+    with open(from_path, 'r') as file:
+        md_content = file.read()
+    
+    with open(template_path, 'r') as file:
+        template_content = file.read()
+    
+    html_string = markdown_to_html_node(md_content)
+    page_title = extract_title(md_content)
+    
+    template_content = template_content.replace("{{ Title }}", page_title)
+    template_content = template_content.replace("{{ Content }}", html_string)
+    print("\n\n\nTEMPLATE CONTENT = ", template_content)
+    
+    with open(dest_path, 'w') as file:
+        file.write(template_content)
+    pass
