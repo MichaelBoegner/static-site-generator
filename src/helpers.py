@@ -177,7 +177,7 @@ def block_type_code_to_html(block):
     return parent_node.to_html()
 
 def block_type_quote_to_html(block):
-    stripped_block = block.replace(">", "")
+    stripped_block = block.replace("> ", "")
     leaf_node = LeafNode(stripped_block, "blockquote")
     return leaf_node.to_html()
 
@@ -256,12 +256,17 @@ def generate_page(from_path, template_path, dest_path):
         template_content = file.read()
     
     html_string = markdown_to_html_node(md_content)
+    html_text_nodes = text_to_text_nodes(html_string)
+    new_html_string = ""
+    for node in html_text_nodes:
+        new_html_string += node.text_node_to_html_node().to_html()
+    
     page_title = extract_title(md_content)
     
     template_content = template_content.replace("{{ Title }}", page_title)
-    template_content = template_content.replace("{{ Content }}", html_string)
-    print("\n\n\nTEMPLATE CONTENT = ", template_content)
+    template_content = template_content.replace("{{ Content }}", new_html_string)
     
     with open(dest_path, 'w') as file:
         file.write(template_content)
-    pass
+    return
+

@@ -239,7 +239,7 @@ class TestMarkdownBlocks(unittest.TestCase):
         self.assertEqual(expected, actual)
     
     def test_block_type_quote_to_html(self):
-        block = ">This is a quote block\n>New line in quote block"
+        block = "> This is a quote block\n> New line in quote block"
         expected = "<blockquote>This is a quote block\nNew line in quote block</blockquote>"
         actual = block_type_quote_to_html(block)
         self.assertEqual(expected, actual)
@@ -317,5 +317,5 @@ class TestMarkdownBlocks(unittest.TestCase):
     def test_generate_page(self):
         from_path = "content/index.md"
         template_path = "template.html"
-        dest_path = "index.html"
+        dest_path = "public/index.html"
         generate_page(from_path, template_path, dest_path)
